@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Add Task{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <!-- El título cambia de color según el estado de la tarea y es más grande para destacar -->
+        <h5 class="card-title display-4" id="title" style="{% if form.completed.value %}background-color: green; 
+            color: white;{% else %}background-color: #f8f9fa; color: black;{% endif %}">
+            Add a New Task
+        </h5>
+        <!-- Formulario para añadir tareas con método POST -->
+        <form method="post">
+            {% csrf_token %}
+            <!-- Campo de descripción-->
+            <div class="form-group">
+                <input type="text" name="description" class="form-control form-control-lg" value="{{ form.description.value|default_if_none:'' }}">
+            </div>
+            <!-- Checkbox para marcar la tarea como completada o pendiente -->
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="completed" id="completed" {% if form.completed.value %}checked{% endif %}>
+                    Completed
+                </label>
+            </div>
+            <!-- Botones para guardar los cambios o volver a la lista de tareas -->
+            <div class="form-group d-flex justify-content-between align-items-center">
+                <button type="submit" class="btn btn-primary">Add Task</button>
+                <a href="/" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+// JavaScript para cambiar el estilo del título al marcar o desmarcar la tarea como completada
+document.getElementById('completed').addEventListener('change', function() {
+    var title = document.getElementById('title');
+    if (this.checked) {
+        title.style.backgroundColor = 'green';
+        title.style.color = 'white';
+    } else {
+        title.style.backgroundColor = '#f8f9fa';
+        title.style.color = 'black';
+    }
+});
+</script>
+{% endblock %}

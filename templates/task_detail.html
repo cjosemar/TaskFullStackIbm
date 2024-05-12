@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Task Detail{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <!-- El título cambia de color según el estado de la tarea y es más grande para destacar -->
+        <h5 class="card-title display-4" id="title" style="{% if form.instance.completed %}background-color: green; 
+            color: white;{% else %}background-color: #f8f9fa; color: black;{% endif %}">
+            Edit Task
+        </h5>
+        <form method="post">
+            {% csrf_token %}
+            <!-- Formulario para editar tareas con método POST -->
+            <div class="form-group">
+                <label>
+                    Description:
+                    <input type="text" name="description" class="form-control form-control-lg" value="{{ form.instance.description }}">
+                </label>
+            </div>
+            <!-- Checkbox para marcar la tarea como completada o pendiente -->
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="completed" id="completed" {% if form.instance.completed %}checked{% endif %}>
+                    Completed
+                </label>
+            </div>
+            <!-- Botones para guardar los cambios o volver a la lista de tareas -->
+            <div class="form-group d-flex justify-content-between align-items-center">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="/" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+// JavaScript para cambiar el estilo del título al marcar o desmarcar la tarea como completada
+document.getElementById('completed').addEventListener('change', function() {
+    const title = document.getElementById('title');
+    if (this.checked) {
+        title.style.backgroundColor = 'green';
+        title.style.color = 'white';
+    } else {
+        title.style.backgroundColor = '#f8f9fa';
+        title.style.color = 'black';
+    }
+});
+</script>
+{% endblock %}
